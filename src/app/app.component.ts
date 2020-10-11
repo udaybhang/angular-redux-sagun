@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'youtube-root',
   template: `
+    <router-outlet></router-outlet>
   `,
   styles: [`
   `]
@@ -12,8 +13,6 @@ export class AppComponent {
   }
 }
 
-// router-outlet
-// dashboard -> header -> router-outlet
-// we need to create actions, reducer -> contain state
-// action dispatch -> reducer will destroy old state and return a new one
-// selector-> to get latest value from reducer
+// my component are dependent on api service
+// api service -> http service
+// http service -> http client

@@ -5,22 +5,39 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
 import {HttpClientModule} from '@angular/common/http';
+import {UsersComponent} from './containers/users.component';
+import {PostComponent} from './containers/post.component';
+import {DashboardComponent} from './components/layout/dashboard.component';
+import {HeaderComponent} from './components/layout/header.component';
+import {LayoutComponent} from './components/layout/youtube-layout.component';
+import {MaterialModule} from './material.module';
+import {HttpService} from './services/http.service';
+import {ApiService} from './services/api.service';
+import {UserCardComponent} from './components/user-card.component';
+import {UserListComponent} from './components/user-list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    UsersComponent,
+    PostComponent,
+    DashboardComponent,
+    HeaderComponent,
+    LayoutComponent,
+    UserCardComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MaterialModule,
     FlexLayoutModule,
     FlexModule,
-    MaterialModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [HttpService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
