@@ -17,3 +17,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #a94442 !important;
   text-align: center;
 }
+.alert .mat-simple-snackbar {
+  justify-content: center;
+}

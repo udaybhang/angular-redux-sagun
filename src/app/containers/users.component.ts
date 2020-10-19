@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {User} from '../models/user';
 import {Store} from '@ngrx/store';
-import {getUserLoaded, getUserLoading, getUsers, RootReducerState} from '../../reducers';
-import {UserListRequestAction, UserListSuccessAction} from '../../actions/user-action';
+import {getUserLoaded, getUserLoading, getUsers, RootReducerState} from '../reducers';
+import {UserListRequestAction, UserListSuccessAction} from '../actions/user-action';
 import {combineLatest} from 'rxjs';
+import {YoutubeRepository} from '../services/youtube-repository';
 
 @Component({
   selector: 'youtube-users',
@@ -19,7 +20,7 @@ import {combineLatest} from 'rxjs';
 export class UsersComponent implements OnInit {
   users: User[] = [];
 
-  constructor(private apiService: ApiService, private store: Store<RootReducerState>) {
+  constructor(private youtubeRepository: YoutubeRepository) {
   }
 
   ngOnInit() {
@@ -27,20 +28,19 @@ export class UsersComponent implements OnInit {
   }
 
   fetchData() {
-    const loading$ = this.store.select(getUserLoading);
-    const loaded$ = this.store.select(getUserLoaded);
-    const getUserData = this.store.select(getUsers);
-    combineLatest([loaded$, loading$]).subscribe((data) => {
-      if (!data[0] && !data[1]) {
-        this.store.dispatch(new UserListRequestAction());
-        this.apiService.getAllPost().subscribe(res => {
-          this.store.dispatch(new UserListSuccessAction({data: res}));
-        });
-      }
-    });
-    getUserData.subscribe((data) => {
+    const userData$ = this.youtubeRepository.getUserList()[1];
+    userData$.subscribe(data => {
       this.users = data;
-      console.log(data);
     });
   }
 }
+
+
+// reducer -> it contain a state (global state)
+// it will take an action -> it will return a new state
+
+// action -> it will contain a payload and a type
+
+// Dependency Injection Principle
+// you should not depend on something directly
+// component -> youtube repo -> apiService -> http Service -> http client

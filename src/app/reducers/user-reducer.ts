@@ -1,4 +1,4 @@
-import {User} from '../app/models/user';
+import {User} from '../models/user';
 import {Action} from '../actions';
 import {USER_LIST_REQUEST, USER_LIST_SUCCESS} from '../actions/user-action';
 
