@@ -1,17 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../services/api.service';
 import {User} from '../models/user';
-import {Store} from '@ngrx/store';
-import {getUserLoaded, getUserLoading, getUsers, RootReducerState} from '../reducers';
-import {UserListRequestAction, UserListSuccessAction} from '../actions/user-action';
-import {combineLatest} from 'rxjs';
 import {YoutubeRepository} from '../services/youtube-repository';
 
 @Component({
   selector: 'youtube-users',
   template: `
     <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px">
-      <youtube-user-list [users]="this.users"></youtube-user-list>
+      <youtube-user-list *ngIf="!this.loading && !this.error" [users]="this.users"></youtube-user-list>
+      <mat-spinner *ngIf="this.loading"></mat-spinner>
+      <youtube-error (reload)="this.tryAgain()" *ngIf="this.error && !loading"></youtube-error>
     </div>
   `,
   styles: [``]
@@ -19,6 +16,8 @@ import {YoutubeRepository} from '../services/youtube-repository';
 
 export class UsersComponent implements OnInit {
   users: User[] = [];
+  loading = false;
+  error = false;
 
   constructor(private youtubeRepository: YoutubeRepository) {
   }
@@ -28,10 +27,23 @@ export class UsersComponent implements OnInit {
   }
 
   fetchData() {
-    const userData$ = this.youtubeRepository.getUserList()[1];
+    const observer$ = this.youtubeRepository.getUserList();
+    const userData$ = observer$[1];
+    const loading$ = observer$[0];
+    const error$ = observer$[2];
     userData$.subscribe(data => {
       this.users = data;
     });
+    loading$.subscribe(data => {
+      this.loading = data;
+    });
+    error$.subscribe(data => {
+      this.error = data;
+    });
+  }
+
+  tryAgain() {
+    this.youtubeRepository.getUserList(true);
   }
 }
 

@@ -18,6 +18,7 @@ import {UserListComponent} from './components/user-list.component';
 import {StoreModule} from '@ngrx/store';
 import {rootReducer} from './reducers';
 import {YoutubeRepository} from './services/youtube-repository';
+import {ErrorComponent} from './components/error.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {YoutubeRepository} from './services/youtube-repository';
     HeaderComponent,
     LayoutComponent,
     UserCardComponent,
-    UserListComponent
+    UserListComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
