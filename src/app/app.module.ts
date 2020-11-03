@@ -21,6 +21,9 @@ import {YoutubeRepository} from './services/youtube-repository';
 import {ErrorComponent} from './components/error.component';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
+import {UpdateUserComponent} from './components/update-user.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -33,7 +36,8 @@ import {environment} from '../environments/environment';
     LayoutComponent,
     UserCardComponent,
     UserListComponent,
-    ErrorComponent
+    ErrorComponent,
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +49,7 @@ import {environment} from '../environments/environment';
     HttpClientModule,
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    ReactiveFormsModule,
   ],
   providers: [HttpService, ApiService, YoutubeRepository],
   bootstrap: [AppComponent]

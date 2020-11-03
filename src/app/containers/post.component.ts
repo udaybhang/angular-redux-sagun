@@ -1,15 +1,30 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {User} from '../models/user';
+import {YoutubeRepository} from '../services/youtube-repository';
 
 @Component({
   selector: 'youtube-post',
   template: `
-    <h1>i am post component</h1>
+    <youtube-user-list [users]="this.users"></youtube-user-list>
   `,
   styles: [``]
 })
 
-export class PostComponent {
+export class PostComponent implements OnInit {
+  users: User[] = [];
 
-  constructor() {
+  constructor(private youtubeRepo: YoutubeRepository) {
+  }
+
+  ngOnInit() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    const observer$ = this.youtubeRepo.getUserList();
+    const userData$ = observer$[1];
+    userData$.subscribe(data => {
+      this.users = data;
+    });
   }
 }
