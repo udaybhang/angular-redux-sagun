@@ -23,7 +23,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {UpdateUserComponent} from './components/update-user.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
+import {ViewUserComponent} from './containers/view-user.component';
 
 
 @NgModule({
@@ -37,7 +37,8 @@ import {MatInputModule} from '@angular/material/input';
     UserCardComponent,
     UserListComponent,
     ErrorComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    ViewUserComponent
   ],
   imports: [
     BrowserModule,
