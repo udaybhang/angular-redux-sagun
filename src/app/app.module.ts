@@ -22,7 +22,7 @@ import {ErrorComponent} from './components/error.component';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {UpdateUserComponent} from './components/update-user.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ViewUserComponent} from './containers/view-user.component';
 import {PostListComponent} from './components/post-list.component';
 import {PostCardComponent} from './components/post-card.component';
@@ -55,6 +55,7 @@ import {PostCardComponent} from './components/post-card.component';
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [HttpService, ApiService, YoutubeRepository],
   bootstrap: [AppComponent]

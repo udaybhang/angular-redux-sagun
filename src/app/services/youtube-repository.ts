@@ -24,8 +24,15 @@ import {
 import {ApiService} from './api.service';
 import {User} from '../models/user';
 import {take} from 'rxjs/operators';
-import {PostListErrorAction, PostListRequestAction, PostListSuccessAction} from '../actions/post-action';
+import {
+  CommentAddAction, CommentDeleteAction,
+  CommentUpdateAction,
+  PostListErrorAction,
+  PostListRequestAction,
+  PostListSuccessAction
+} from '../actions/post-action';
 import {Post} from '../models/post';
+import {Comment} from '../models/post';
 
 @Injectable()
 export class YoutubeRepository {
@@ -95,5 +102,17 @@ export class YoutubeRepository {
       }
     });
     return [loading$, post$, getError$];
+  }
+
+  addComment(comment: Comment, postId: number) {
+    this.store.dispatch(new CommentAddAction({data: comment, postId}));
+  }
+
+  updateComment(comment: Comment, postId: number) {
+    this.store.dispatch(new CommentUpdateAction({data: comment, postId}));
+  }
+
+  deleteComment(commentId: number, postId: number) {
+    this.store.dispatch(new CommentDeleteAction({id: commentId, postId}));
   }
 }

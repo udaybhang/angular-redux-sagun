@@ -1,6 +1,14 @@
 import {Post} from '../models/post';
 import {Action} from '../actions';
-import {POST_ADD, POST_DELETE, POST_LIST_ERROR, POST_LIST_REQUEST, POST_LIST_SUCCESS, POST_UPDATE} from '../actions/post-action';
+import {
+  COMMENT_ADD_ACTION, COMMENT_REMOVE_ACTION, COMMENT_UPDATE_ACTION,
+  POST_ADD,
+  POST_DELETE,
+  POST_LIST_ERROR,
+  POST_LIST_REQUEST,
+  POST_LIST_SUCCESS,
+  POST_UPDATE
+} from '../actions/post-action';
 import {StoreUtility} from '../utils/store-utility';
 import {createSelector} from '@ngrx/store';
 
@@ -62,6 +70,36 @@ export function PostReducer(state = initialState, action: Action): PostReducerSt
         }
       };
     }
+    case COMMENT_ADD_ACTION: {
+      const postId = action.payload.postId;
+      const comment = action.payload.data;
+      const oldPost: Post = JSON.parse(JSON.stringify(state.entities[postId]));
+      oldPost.comments.push(comment);
+      const obj = {[postId]: oldPost};
+      const entities = {...state.entities, ...obj};
+      return {...state, ...{entities}};
+    }
+    case COMMENT_UPDATE_ACTION: {
+      const postId = action.payload.postId;
+      const comment = action.payload.data;
+      const oldPost: Post = JSON.parse(JSON.stringify(state.entities[postId]));
+      const oldPostWithoutComment = oldPost.comments.filter(data => data.id !== comment.id);
+      oldPostWithoutComment.push(comment);
+      oldPost.comments = oldPostWithoutComment;
+      const obj = {[postId]: oldPost};
+      const entities = {...state.entities, ...obj};
+      return {...state, ...{entities}};
+    }
+    case COMMENT_REMOVE_ACTION: {
+      const postId = action.payload.postId;
+      const commentId = action.payload.id;
+      const oldPost: Post = JSON.parse(JSON.stringify(state.entities[postId]));
+      const oldPostWithoutComment = oldPost.comments.filter(data => data.id !== commentId);
+      oldPost.comments = oldPostWithoutComment;
+      const obj = {[postId]: oldPost};
+      const entities = {...state.entities, ...obj};
+      return {...state, ...{entities}};
+    }
     default: {
       return state;
     }
@@ -75,3 +113,5 @@ export const getIds = (state: PostReducerState) => state.ids;
 export const getPosts = createSelector(getEntities,
   (entities) => StoreUtility.unNormalized(entities));
 export const getError = (state: PostReducerState) => state.error;
+
+
