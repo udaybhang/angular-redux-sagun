@@ -1,19 +1,24 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../models/user';
 import {YoutubeRepository} from '../services/youtube-repository';
+import {Post} from '../models/post';
+import {takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'youtube-post',
   template: `
-    <youtube-user-list [users]="this.users"></youtube-user-list>
+    <youtube-post-list [postList]="postList"></youtube-post-list>
   `,
   styles: [``]
 })
 
 export class PostComponent implements OnInit {
-  users: User[] = [];
+  postList: Post[];
+  isAlive = true;
+  loading = false;
+  error = false;
 
-  constructor(private youtubeRepo: YoutubeRepository) {
+  constructor(private youtubeRepository: YoutubeRepository) {
   }
 
   ngOnInit() {
@@ -21,10 +26,18 @@ export class PostComponent implements OnInit {
   }
 
   fetchData() {
-    const observer$ = this.youtubeRepo.getUserList();
-    const userData$ = observer$[1];
-    userData$.subscribe(data => {
-      this.users = data;
+    const observer$ = this.youtubeRepository.getAllPost();
+    const postData$ = observer$[1];
+    const loading$ = observer$[0];
+    const error$ = observer$[2];
+    postData$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
+      this.postList = data;
+    });
+    loading$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
+      this.loading = data;
+    });
+    error$.pipe(takeWhile(() => this.isAlive)).subscribe(data => {
+      this.error = data;
     });
   }
 }
