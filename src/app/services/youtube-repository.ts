@@ -1,11 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {
-  getPostError,
-  getPostLoaded,
-  getPostLoading,
-  getPosts,
-  getUserById,
   getUserError,
   getUserLoaded,
   getUserLoading,
@@ -24,15 +19,6 @@ import {
 import {ApiService} from './api.service';
 import {User} from '../models/user';
 import {take} from 'rxjs/operators';
-import {
-  CommentAddAction, CommentDeleteAction,
-  CommentUpdateAction,
-  PostListErrorAction,
-  PostListRequestAction,
-  PostListSuccessAction
-} from '../actions/post-action';
-import {Post} from '../models/post';
-import {Comment} from '../models/post';
 
 @Injectable()
 export class YoutubeRepository {
@@ -72,47 +58,19 @@ export class YoutubeRepository {
     this.store.dispatch(new UserAddAction({data}));
   }
 
-  getUserById(id: number, force = false) {
-    // get user from reducer if exist otherwise from api
-    const user$ = this.store.select(state => getUserById(state, id));
-    user$.pipe(take(1)).subscribe(res => {
-      if (force || !res) {
-        return this.apiService.getUser(id).subscribe(data => {
-          this.store.dispatch(new UserAddAction({data}));
-        });
-      }
-      return res;
-    });
-    return user$;
-  }
+  // getUserById(id: number, force = false) {
+  //   // get user from reducer if exist otherwise from api
+  //   const user$ = this.store.select(state => getUserById(state, id));
+  //   user$.pipe(take(1)).subscribe(res => {
+  //     if (force || !res) {
+  //       return this.apiService.getUser(id).subscribe(data => {
+  //         this.store.dispatch(new UserAddAction({data}));
+  //       });
+  //     }
+  //     return res;
+  //   });
+  //   return user$;
+  // }
 
-  getAllPost(force = false): [Observable<boolean>, Observable<Post[]>, Observable<boolean>] {
-    const post$ = this.store.select(getPosts);
-    const loaded$ = this.store.select(getPostLoading);
-    const loading$ = this.store.select(getPostLoaded);
-    const getError$ = this.store.select(getPostError);
-    combineLatest([loaded$, loading$]).pipe(take(1)).subscribe((data) => {
-      if ((!data[0] && !data[1]) || force) {
-        this.store.dispatch(new PostListRequestAction());
-        this.apiService.getAllPost().subscribe(res => {
-          this.store.dispatch(new PostListSuccessAction({data: res}));
-        }, error => {
-          this.store.dispatch(new PostListErrorAction());
-        });
-      }
-    });
-    return [loading$, post$, getError$];
-  }
 
-  addComment(comment: Comment, postId: number) {
-    this.store.dispatch(new CommentAddAction({data: comment, postId}));
-  }
-
-  updateComment(comment: Comment, postId: number) {
-    this.store.dispatch(new CommentUpdateAction({data: comment, postId}));
-  }
-
-  deleteComment(commentId: number, postId: number) {
-    this.store.dispatch(new CommentDeleteAction({id: commentId, postId}));
-  }
 }

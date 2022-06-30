@@ -23,22 +23,22 @@ export class ViewUserComponent implements OnDestroy {
     //     console.log(user);
     //   });
     // });
-    this.fetchData();
+    // this.fetchData();
   }
 
   ngOnDestroy() {
     this.isAlive = false;
   }
 
-  fetchData() {
-    const user$ = this.route.params.pipe(map(data => data.id),
-      takeWhile(() => this.isAlive),
-      switchMap((id) => {
-        return this.youtubeRepo.getUserById(id);
-      }), filter(res => !!res));
-    user$.subscribe(data => {
-      this.user = data;
-    });
-  }
+  // fetchData() {
+  //   const user$ = this.route.params.pipe(map(data => data.id),
+  //     takeWhile(() => this.isAlive),
+  //     switchMap((id) => {
+  //       return this.youtubeRepo.getUserById(id);
+  //     }), filter(res => !!res));
+  //   user$.subscribe(data => {
+  //     this.user = data;
+  //   });
+  // }
 
 }

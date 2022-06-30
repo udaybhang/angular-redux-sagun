@@ -6,7 +6,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule, FlexModule} from '@angular/flex-layout';
 import {HttpClientModule} from '@angular/common/http';
 import {UsersComponent} from './containers/users.component';
-import {PostComponent} from './containers/post.component';
 import {DashboardComponent} from './components/layout/dashboard.component';
 import {HeaderComponent} from './components/layout/header.component';
 import {LayoutComponent} from './components/layout/youtube-layout.component';
@@ -24,15 +23,12 @@ import {environment} from '../environments/environment';
 import {UpdateUserComponent} from './components/update-user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ViewUserComponent} from './containers/view-user.component';
-import {PostListComponent} from './components/post-list.component';
-import {PostCardComponent} from './components/post-card.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UsersComponent,
-    PostComponent,
     DashboardComponent,
     HeaderComponent,
     LayoutComponent,
@@ -41,8 +37,6 @@ import {PostCardComponent} from './components/post-card.component';
     ErrorComponent,
     UpdateUserComponent,
     ViewUserComponent,
-    PostListComponent,
-    PostCardComponent
   ],
   imports: [
     BrowserModule,
